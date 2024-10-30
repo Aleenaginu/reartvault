@@ -1,0 +1,16 @@
+<h2>Update Item for Order #{{ order_item.order.id }}</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <div>
+        <label>Product:</label>
+        <p>{{ order_item.product.name }} - ${{ order_item.price }}</p>
+    </div>
+    <div>
+        <label for="quantity">Quantity:</label>
+        <input type="number" name="quantity" id="quantity" value="{{ order_item.quantity }}" min="1" required>
+    </div>
+    <button type="submit">Update Item</button>
+</form>
+
+<a href="{% url 'view_order_items' order_item.order.id %}">Back to Order Items</a>

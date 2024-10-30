@@ -1,0 +1,462 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ashion | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{% static "shop/css/bootstrap.min.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "shop/css/font-awesome.min.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "shop/css/elegant-icons.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "shop/css/jquery-ui.min.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "shop/css/magnific-popup.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "shop/css/owl.carousel.min.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "shop/css/slicknav.min.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "shop/css/style.css" %}" type="text/css">
+
+    <!-- Custom CSS for this page -->
+    <style>
+        .product-details-container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .product-image {
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .product-info {
+            padding-left: 30px;
+        }
+        .product-title {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        .product-price {
+            font-size: 24px;
+            color: #e53637;
+            margin-bottom: 20px;
+        }
+        .product-description {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .add-to-cart-btn {
+            background-color: #e53637;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(229, 54, 55, 0.2);
+        }
+        .add-to-cart-btn:hover {
+            background-color: #d32f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(229, 54, 55, 0.3);
+        }
+        .add-to-cart-btn .icon_bag_alt {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        .product-meta {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .product-meta-item {
+            margin-bottom: 10px;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .color-option:hover {
+            border-color: #333;
+        }
+
+        .color-option input {
+            display: none;
+        }
+
+        .color-option input:checked + .color-circle {
+            border: 2px solid #333;
+        }
+
+        .color-circle {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .color-red { background-color: #e53637; }
+        .color-blue { background-color: #3498db; }
+        .color-grey { background-color: #95a5a6; }
+
+        .quantity {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .quantity span {
+        margin-right: 10px;
+        font-weight: 600;
+    }
+
+    .pro-qty {
+        width: 120px;
+        height: 40px;
+        border: 1px solid #e5e5e5;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        overflow: hidden;
+    }
+
+    .pro-qty input {
+        width: 40px;
+        border: none;
+        text-align: center;
+        font-size: 16px;
+        background: transparent;
+        padding: 0;
+    }
+
+    .pro-qty .qtybtn {
+        width: 40px;
+        font-size: 16px;
+        color: #666;
+        cursor: pointer;
+        text-align: center;
+        background: none;
+        border: none;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .pro-qty .qtybtn:hover {
+        color: #e53637;
+    }
+    </style>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Begin -->
+    <body>
+        <!-- Page Preloder -->
+        {% comment %} <div id="preloder">
+            <div class="loader"></div>
+        </div> {% endcomment %}
+    
+        <!-- Offcanvas Menu Begin -->
+        <div class="offcanvas-menu-overlay"></div>
+        <div class="offcanvas-menu-wrapper">
+            <div class="offcanvas__close">+</div>
+            <ul class="offcanvas__widget">
+                <li><span class="icon_search search-switch"></span></li>
+                <li><a href="#"><span class="icon_heart_alt"></span>
+                    <div class="tip">2</div>
+                </a></li>
+                <li><a href="#"><span class="icon_bag_alt"></span>
+                    <div class="tip">2</div>
+                </a></li>
+            </ul>
+            <div class="offcanvas__logo">
+                <a href="./index.html"><img src="img/logo.png" alt=""></a>
+            </div>
+            <div id="mobile-menu-wrap"></div>
+            <div class="offcanvas__auth">
+                <a href="#">Login</a>
+                <a href="#">Register</a>
+            </div>
+        </div>
+        <!-- Offcanvas Menu End -->
+    
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-3 col-lg-2">
+                    <div class="header__logo">
+                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-7">
+                    <nav class="header__menu">
+                        <ul>
+                            <li class="active"><a href="{% url 'shop_index' %}">Home</a></li>
+                            {% if user.is_authenticated and request.user.customers %}
+                            <li><a href="{% url 'shop_index' %}">Shop</a></li>
+                            <!-- <li><a href="#">Product Details</a>
+                                <ul class="dropdown">
+                                    <li><a href="./product-details.html"></a>Orders</li>
+                                    <li><a href="./shop-cart.html">Shop Cart</a></li>
+                                    <li><a href="./checkout.html">Checkout</a></li>
+                                    <li><a href="./blog-details.html">Address Details</a></li>
+                                </ul>
+                            </li> -->
+                            
+                            <!-- <li><a href="./contact.html">Contact</a></li> -->
+                          <li> <a href="{% url 'customerlogout' %}">Logout</a></li> 
+                            {% else %}
+                            <li><a href="{% url 'customerlogin' %}">Login</a></li> 
+                            <li><a href="{% url 'customer_register' %}">Register</a></li> 
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="header__right">
+                        <!-- <div class="header__right__auth">
+                            <a href="#">Login</a>
+                            <a href="#">Register</a>
+                        </div> -->
+                        <ul class="header__right__widget">
+                            <!-- <li><span class="icon_search search-switch"></span></li>
+                            <li><a href="#"><span class="icon_heart_alt"></span>
+                                <div class="tip">2</div>
+                            </a></li> -->
+                            {% if user.is_authenticated and request.user.customers %}
+                            <li><a href="{% url 'wishlist' %}"><span class="icon_heart_alt"></span>
+                                <div class="tip">{{ wishlist_count }}</div>
+                            </a></li>
+                            <li><a href="{% url 'cart' %}"><span class="icon_bag_alt"></span>
+                                <div class="tip">{{ cart_count }}</div>
+                            </a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Product Details Section Begin -->
+    <section class="product-details spad">
+        <div class="container product-details-container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="product_details_pic">
+                        <img src="{{single_product.image.url}}" alt="{{single_product.name}}" class="img-fluid product-image">
+                    </div>
+                </div>
+                <div class="col-lg-6 product-info">
+                    <div class="product_details_text">
+                        <h3 class="product-title">{{single_product.name}}</h3>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <span>( 138 reviews )</span>
+                        </div>
+                        <div class="product-price">Rs. {{single_product.price}}</div>
+                        <p class="product-description">{{single_product.description}}</p>
+                        <div class="product_details_button">
+                            <div class="quantity">
+                                <span>Quantity:</span>
+                                <div class="pro-qty">
+                                    <button class="qtybtn" onclick="decrementQuantity()"></button>
+                                    <input type="number" id="quantity" value="1" min="1" readonly>
+                                    <button class="qtybtn" onclick="incrementQuantity()"></button>
+                                </div>
+                            </div>
+                            
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'add_cart' single_product.id %}" class="add-to-cart-btn">
+                                    <span class="icon_bag_alt"></span> Add to cart
+                                </a>
+                                <a href="{% url 'add_to_wishlist' single_product.id %}" class="add-to-cart-btn">
+                                    <span class="icon_heart_alt"></span>Wishlist
+                                </a>
+                            {% else %}
+                                <a href="{% url 'customerlogin' %}?next={% url 'add_cart' single_product.id %}" class="add-to-cart-btn">
+                                    <span class="icon_bag_alt"></span> Add to cart
+                                </a>
+                                <a href="{% url 'add_to_wishlist' single_product.id %}" class="add-to-cart-btn">
+                                    <span class="icon_heart_alt"></span>Wishlist
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="product-meta">
+                            <div class="product-meta-item">
+                                <span>Availability:</span>
+                                <span class="in-stock">In Stock</span>
+                            </div>
+                            <div class="product-meta-item">
+                                <span>Available colors:</span>
+                                <div class="color-options">
+                                    <label class="color-option">
+                                        <input type="radio" name="color__radio" id="red" checked>
+                                        <span class="color-circle color-red"></span>
+                                    </label>
+                                    <label class="color-option">
+                                        <input type="radio" name="color__radio" id="blue">
+                                        <span class="color-circle color-blue"></span>
+                                    </label>
+                                    <label class="color-option">
+                                        <input type="radio" name="color__radio" id="grey">
+                                        <span class="color-circle color-grey"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="product-meta-item">
+                                <span>Promotions:</span>
+                                <span>Free shipping</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Product Details Section End -->
+
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-7">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                        cilisis.</p>
+                        <div class="footer__payment">
+                            <a href="#"><img src="img/payment/payment-1.png" alt=""></a>
+                            <a href="#"><img src="img/payment/payment-2.png" alt=""></a>
+                            <a href="#"><img src="img/payment/payment-3.png" alt=""></a>
+                            <a href="#"><img src="img/payment/payment-4.png" alt=""></a>
+                            <a href="#"><img src="img/payment/payment-5.png" alt=""></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-5">
+                    <div class="footer__widget">
+                        <h6>Quick links</h6>
+                        <ul>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Blogs</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">FAQ</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-4">
+                    <div class="footer__widget">
+                        <h6>Account</h6>
+                        <ul>
+                            <li><a href="#">My Account</a></li>
+                            <li><a href="#">Orders Tracking</a></li>
+                            <li><a href="#">Checkout</a></li>
+                            <li><a href="#">Wishlist</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-8 col-sm-8">
+                    <div class="footer__newslatter">
+                        <h6>NEWSLETTER</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Email">
+                            <button type="submit" class="site-btn">Subscribe</button>
+                        </form>
+                        <div class="footer__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    <div class="footer_copyright_text">
+                        <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+                    </div>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+
+    <!-- Js Plugins -->
+    <script src="{% static "shop/js/jquery-3.3.1.min.js" %}"></script>
+    <script src="{% static "shop/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "shop/js/jquery.magnific-popup.min.js" %}"></script>
+    <script src="{% static "shop/js/jquery-ui.min.js" %}"></script>
+    <script src="{% static "shop/js/mixitup.min.js" %}"></script>
+    <script src="{% static "shop/js/jquery.countdown.min.js" %}"></script>
+    <script src="{% static "shop/js/jquery.slicknav.js" %}"></script>
+    <script src="{% static "shop/js/owl.carousel.min.js" %}"></script>
+    <script src="{% static "shop/js/jquery.nicescroll.min.js" %}"></script>
+    <script src="{% static "shop/js/main.js" %}"></script>
+
+   
+</body>
+
+</html>

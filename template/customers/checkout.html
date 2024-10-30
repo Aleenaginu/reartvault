@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #f4f6f8;
+            --text-color: #2c3e50;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .checkout-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        .checkout-form {
+            flex: 2;
+            padding: 2rem;
+        }
+
+        .order-summary {
+            flex: 1;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .order-subtotal {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            text-align: right;
+        }
+
+        .order-tax {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            text-align: right;
+        }
+
+        .order-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            text-align: right;
+        }
+
+        .btn-submit {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .animate-in {
+            animation: slideIn 0.5s ease forwards;
+        }
+    </style>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <div class="checkout-container">
+        <div class="checkout-form">
+            <h2>Shipping Information</h2>
+        
+<form method="POST" id="shipping-form">
+    {% csrf_token %}
+    <!-- Display saved addresses as radio buttons -->
+    {% if saved_addresses.exists %}
+        {% for address in saved_addresses %}
+            <div>
+                <input type="radio" id="address_{{ address.id }}" name="selected_address" value="{{ address.id }}" onchange="fillAddressForm({{ address.id }})">
+                <label for="address_{{ address.id }}">
+                    {{ address.address_type }}: {{ address.full_name }}<br>
+                    {{ address.address }}, {{ address.city }}, {{ address.state }} - {{ address.zip_code }}<br>
+                    Phone: {{ address.phone }}
+                </label>    
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No saved addresses. Please enter a new address below.</p>
+    {% endif %}
+    <!-- Shipping Address Form -->
+    <h3>Shipping Address:</h3>
+    <label for="address">Address</label>
+    <input type="text" id="address" name="address" required>
+    <label for="city">City</label>
+    <input type="text" id="city" name="city" required>
+    <label for="state">State</label>
+    <input type="text" id="state" name="state" required>
+    <label for="zipcode">Zip Code</label>
+    <input type="text" id="zipcode" name="zipcode" required>
+    <label for="country">Country</label>
+    <input type="text" id="country" name="country" required>
+    <button type="submit" class="btn-submit">Proceed to Payment</button>
+</form>
+            
+        </div>
+        
+        <div class="order-summary">
+            <h2>Order Summary</h2>
+            {% for item in cart_items %}
+                <div class="order-item animate-in" style="animation-delay: {{ forloop.counter|add:6 }}00ms;">
+                    <span>{{ item.product.name }} ({{ item.Quantity }})</span>
+                    <span>₹{{ item.total_price|floatformat:2 }}</span>
+                </div>
+            {% endfor %}
+            <div class="order-subtotal animate-in" style="animation-delay: {{ cart_items|length|add:7 }}00ms;">
+                Subtotal: ₹{{ cart_total|floatformat:2 }}
+            </div>
+            <div class="order-tax animate-in" style="animation-delay: {{ cart_items|length|add:8 }}00ms;">
+                Tax (2%): ₹{{ tax|floatformat:2 }}
+            </div>
+            <div class="order-total animate-in" style="animation-delay: {{ cart_items|length|add:9 }}00ms;">
+                Grand Total: ₹{{ grand_total|floatformat:2 }}
+            </div>
+        </div>
+    </div>
+
+    {% if razorpay_order_id %}
+    <script>
+        var options = {
+            "key": "{{ razorpay_merchant_key }}",
+            "amount": "{{ grand_total|floatformat:2 }}",
+            "currency": "INR",
+            "name": "Your Company Name",
+            "description": "Order Payment",
+            "order_id": "{{ razorpay_order_id }}",
+            "handler": function (response){
+                // Send the payment details to your server
+                fetch("{{ callback_url }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    },
+                    body: JSON.stringify({
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Redirect to a success page
+                        window.location.href = "{% url 'payment_success' order.id %}";
+                    } else {
+                        alert("Payment failed. Please try again.");
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert("An error occurred. Please try again.");
+                });
+            },
+            "prefill": {
+                "name": "{{ request.user.get_full_name }}",
+                "email": "{{ request.user.email }}",
+            },
+            "theme": {
+                "color": "#3498db"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        document.getElementById('shipping-form').onsubmit = function(e){
+            e.preventDefault();
+            rzp1.open();
+        }
+    </script>
+    {% endif %}
+
+
+    <script>
+        const savedAddresses = {
+            {% for address in saved_addresses %}
+                {{ address.id }}: {
+                    address: "{{ address.address }}",
+                    city: "{{ address.city }}",
+                    state: "{{ address.state }}",
+                    zipcode: "{{ address.zip_code }}",
+                    country: "{{ address.country }}"
+                },
+            {% endfor %}
+        };
+    
+        function fillAddressForm(addressId) {
+            const selectedAddress = savedAddresses[addressId];
+
+            document.getElementById('address').value = selectedAddress.address;
+            document.getElementById('city').value = selectedAddress.city;
+            document.getElementById('state').value = selectedAddress.state;
+            document.getElementById('zip_code').value = selectedAddress.zipcode;
+            document.getElementById('phone').value = selectedAddress.phone;
+        }
+    </script>
+    
+</body>
+</html>

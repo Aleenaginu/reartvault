@@ -1,0 +1,65 @@
+<h2 class="section-title">Order Summary</h2>
+
+<div class="order-summary">
+    <h3>Order ID: {{ order.id }}</h3>
+    <p>Status: <span class="status-{{ order.status|lower }}">{{ order.status }}</span></p>
+    <p>Total Amount: ₹{{ order.total_amount }}</p>
+
+    <h3>Order Items</h3>
+    <ul class="order-items">
+        {% for item in order_items %}
+            <li class="order-item">
+                {{ item.product.name }} ({{ item.quantity }}) - ₹{{ item.price }} (Subtotal: ₹{{ item.subtotal }})
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if shipping_address %}
+        <h3>Shipping Address</h3>
+        <p>{{ shipping_address.address }}</p>
+        <p>{{ shipping_address.city }}, {{ shipping_address.state }}</p>
+        <p>{{ shipping_address.zip_code }}, {{ shipping_address.country }}</p>
+    {% else %}
+        <p>No shipping address available for this order.</p>
+    {% endif %}
+
+    <a href="{% url 'shop_index' %}" class="btn" style="background-color: #3498db; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">Back to Home</a>
+
+</div>
+
+<style>
+    body {
+        background-color: #dbf8d0; /* Light pastel background color */
+    }
+    .section-title {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #2c3e50;
+        font-size: 2.5rem;
+        font-weight: 300;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    .order-summary {
+        background-color: #dcf4f3; /* White container for order summary */
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+        margin: 20px auto;
+        max-width: 800px;
+    }
+    .order-items {
+        list-style-type: none;
+        padding: 0;
+    }
+    .order-item {
+        padding: 10px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .order-item:last-child {
+        border-bottom: none;
+    }
+    .status-paid { color: #2ecc71; }
+    .status-pending { color: #f1c40f; }
+    .status-cancelled { color: #e74c3c; }
+</style>

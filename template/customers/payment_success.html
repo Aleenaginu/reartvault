@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Success</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+        }
+        .success-message {
+            background-color: #dff0d8;
+            border: 1px solid #d6e9c6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .order-details {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .order-summary {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+ 
+    <h1>Payment Successful!</h1>
+    <div class="success-message">
+        <p>Thank you for your order. Your order number is: {{ order.id }}</p>
+        <p>We will process your order soon.</p>
+    </div>
+    
+    <div class="order-details">
+        <h2>Order Details</h2>
+        <p><strong>Order ID:</strong> {{ order.id }}</p>
+        <p><strong>Status:</strong> {{ order.status }}</p>
+        <p><strong>Total Amount:</strong> ₹{{ order.total_amount }}</p>
+        
+        <button id="viewOrderSummary" class="btn">View Order Summary</button>
+        
+        <div id="orderSummary" class="order-summary">
+            <h3>Order Items</h3>
+            <ul>
+                {% for item in order_items %}
+                    <li>{{ item.product.name }} ({{ item.quantity }}) - ₹{{ item.price }} (Subtotal: ₹{{ item.subtotal }})</li>
+                {% endfor %}
+            </ul>
+
+            {% if shipping_address %}
+                <h3>Shipping Address</h3>
+                <p>{{ shipping_address.address }}</p>
+                <p>{{ shipping_address.city }}, {{ shipping_address.state }}</p>
+                <p>{{ shipping_address.zip_code }}, {{ shipping_address.country }}</p>
+            {% else %}
+                <p>No shipping address available for this order.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <p><a href="{% url 'shop_index' %}" class="btn">Continue Shopping</a></p>
+
+    <script>
+        document.getElementById('viewOrderSummary').addEventListener('click', function() {
+            var orderSummary = document.getElementById('orderSummary');
+            if (orderSummary.style.display === 'none' || orderSummary.style.display === '') {
+                orderSummary.style.display = 'block';
+                this.textContent = 'Hide Order Summary';
+            } else {
+                orderSummary.style.display = 'none';
+                this.textContent = 'View Order Summary';
+            }
+        });
+    </script>
+</body>
+</html>

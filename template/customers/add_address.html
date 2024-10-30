@@ -1,0 +1,587 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add New Address</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{% static "shop/css/bootstrap.min.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "shop/css/font-awesome.min.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "shop/css/elegant-icons.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "shop/css/jquery-ui.min.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "shop/css/magnific-popup.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "shop/css/owl.carousel.min.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "shop/css/slicknav.min.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "shop/css/style.css" %}" type="text/css">
+    <style>
+        .address-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease;
+        }
+        .address-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .address-card-header {
+            background-color: #f8f9fa;
+            padding: 10px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .address-type {
+            font-weight: bold;
+            color: #333;
+        }
+        .address-menu {
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .address-card-body {
+            padding: 15px;
+        }
+        .address-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .address-details {
+            color: #666;
+        }
+        .add-address-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .add-address-btn:hover {
+            background-color: #0056b3;
+        }
+        .address-menu-dropdown {
+            position: absolute;
+            right: 10px;
+            top: 40px;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            display: none;
+        }
+        .address-menu-dropdown a {
+            display: block;
+            padding: 8px 15px;
+            text-decoration: none;
+            color: #333;
+        }
+        .address-menu-dropdown a:hover {
+            background-color: #f8f9fa;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Begin -->
+    <body>
+        <!-- Page Preloder -->
+        {% comment %} <div id="preloder">
+            <div class="loader"></div>
+        </div> {% endcomment %}
+    
+        <!-- Offcanvas Menu Begin -->
+        <div class="offcanvas-menu-overlay"></div>
+        <div class="offcanvas-menu-wrapper">
+            <div class="offcanvas__close">+</div>
+            <ul class="offcanvas__widget">
+                <!-- <li><span class="icon_search search-switch"></span></li>
+                <li><a href="#"><span class="icon_heart_alt"></span>
+                    <div class="tip">2</div>
+                </a></li> -->
+                <li><a href="{% url 'cart' %}"><span class="icon_bag_alt"></span>
+                    <div class="tip">{{ cart_count }}</div>
+                </a></li>
+            </ul>
+            <div class="offcanvas__logo">
+                <a href="./index.html"><img src="img/logo.png" alt=""></a>
+            </div>
+            <div id="mobile-menu-wrap"></div>
+            <div class="offcanvas__auth">
+                <a href="#">Login</a>
+                <a href="#">Register</a>
+            </div>
+        </div>
+        <!-- Offcanvas Menu End -->
+    
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-3 col-lg-2">
+                    <div class="header__logo">
+                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-7">
+                    <nav class="header__menu">
+                        <ul>
+                            <li class="active"><a href="{% url 'shop_index' %}">Home</a></li>
+                            {% if user.is_authenticated and request.user.customers %}
+                            <li><a href="{% url 'shop_index' %}">Shop</a></li>
+                            <li><a href="{% url 'view_your_orders' %}">View Orders</a></li>
+                            <!-- <li><a href="#">Product Details</a>
+                                <ul class="dropdown">
+                                    <li><a href="./product-details.html"></a>Orders</li>
+                                    <li><a href="./shop-cart.html">Shop Cart</a></li>
+                                    <li><a href="./checkout.html">Checkout</a></li>
+                                    <li><a href="./blog-details.html">Address Details</a></li>
+                                </ul>
+                            </li> -->
+                            
+                            <!-- <li><a href="./contact.html">Contact</a></li> -->
+                          <li> <a href="{% url 'customerlogout' %}">Logout</a></li> 
+                          <!-- <div class="profile-details" style="display: inline-block; vertical-align: middle; margin-left: 10px;">
+                            <a href="{% url 'customerprofile' %}">
+                                <span class="admin_name" style="font-size: 16px; font-weight: 700; color: black;">Hi {{ user.username }}</span>
+                            </a>
+                        </div> -->
+                            {% else %}
+                            <li><a href="{% url 'customerlogin' %}">Login</a></li> 
+                            <li><a href="{% url 'customer_register' %}">Register</a></li> 
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="header__right">
+                        <!-- <div class="header__right__auth">
+                            <a href="#">Login</a>
+                            <a href="#">Register</a>
+                        </div> -->
+                        <ul class="header__right__widget">
+                            <!-- <li><span class="icon_search search-switch"></span></li>
+                            <li><a href="#"><span class="icon_heart_alt"></span>
+                                <div class="tip">2</div>
+                            </a></li> -->
+                            {% if user.is_authenticated and request.user.customers %}
+                            <li><a href="{% url 'wishlist' %}"><span class="icon_heart_alt"></span>
+                                <div class="tip">{{ wishlist_count }}</div>
+                            </a></li>
+                            <li><a href="{% url 'cart' %}"><span class="icon_bag_alt"></span>
+                                <div class="tip">{{ cart_count }}</div>
+                            </a></li>
+                            <div class="profile-details" style="display: inline-block; vertical-align: middle; margin-left: 10px;">
+                                <span class="admin_name" style="font-size: 16px; font-weight: 700; color: #010302;">Hi {{user.username}}</span>
+                                <i class='bx bx-chevron-down'></i>
+                                <ul class="dropdown-menu" style="display: none; position: absolute; background-color: #fff; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);">
+                                    <li><a class="dropdown-item" href="{% url 'customerprofile' %}" style="padding: 10px 20px; text-decoration: none; color: #333;">Profile</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'order_history' %}" style="padding: 10px 20px; text-decoration: none; color: #333;">View Orders</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'track_order_status' %}" style="padding: 10px 20px; text-decoration: none; color: #333;">Track Orders</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'add_address' %}" style="padding: 10px 20px; text-decoration: none; color: #333;">Add Address</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'customerlogout' %}" style="padding: 10px 20px; text-decoration: none; color: #333;">Logout</a></li>
+                                </ul>
+                              </div>
+                            <!-- <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="{{ profile_pic }}" alt="Profile" class="profile-icon">
+                                    <span class="username">Hi {{ user.username }}</span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="{% url 'customerprofile' %}">Profile</a>
+                                    <a class="dropdown-item" href="{% url 'add_address' %}">Add Address</a>
+                                </div>
+                            </li> -->
+
+
+
+                            <!-- <div class="profile-details" style="display: inline-block; vertical-align: middle; margin-left: 10px;">
+                                <a href="{% url 'customerprofile' %}">
+                                    <span class="admin_name" style="font-size: 16px; font-weight: 700; color: black;">Hi {{ user.username }}</span>
+                                </a>
+                                
+                            </div> -->
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+ 
+    <!-- Manage Addresses Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <h2>Manage Addresses</h2>
+            
+            <!-- Add New Address Button -->
+            <div class="row mb-4">
+                <div class="col-lg-12">
+                    <button id="showAddressForm" class="add-address-btn">+ ADD A NEW ADDRESS</button>
+                </div>
+            </div>
+            
+            <!-- Add New Address Form (initially hidden) -->
+            <div id="addressForm" style="display: none; width: 100%; max-width: 600px; margin: auto;">
+                <form method="post" class="checkout__form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-12"> <!-- Changed to col-lg-12 for full width -->
+                            <div class="checkout__input">
+                                <p>Address Type<span>*</span></p>
+                                <input type="text" id="address_type" name="address_type" required style="width: 100%;">
+                            </div>
+                            <div class="checkout__input">
+                                <p>Full Name<span>*</span></p>
+                                <input type="text" id="full_name" name="full_name" required style="width: 100%;">
+                            </div>
+                            <div class="checkout__input">
+                                <p>Phone Number<span>*</span></p>
+                                <input type="text" id="phone" name="phone" required style="width: 100%;">
+                            </div>
+                            <div class="checkout__input">
+                                <p>Address<span>*</span></p>
+                                <input type="text" id="address" name="address" required style="width: 100%;">
+                            </div>
+                            <div class="checkout__input">
+                                <p>City<span>*</span></p>
+                                <input type="text" id="city" name="city" required style="width: 100%;">
+                            </div>
+                            <div class="checkout__input">
+                                <p>State<span>*</span></p>
+                                <input type="text" id="state" name="state" required style="width: 100%;">
+                            </div>
+                            <div class="checkout__input">
+                                <p>ZIP Code<span>*</span></p>
+                                <input type="text" id="zip_code" name="zip_code" required style="width: 100%;">
+                            </div>
+                            <button type="submit" class="site-btn">Add Address</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Display Saved Addresses -->
+            <div class="row">
+                {% for address in addresses %}
+                <div class="col-12 mb-4">
+                    <div class="address-card">
+                        <div class="address-card-header">
+                            <span class="address-type">{{ address.address_type }}</span>
+                            <span class="address-menu" onclick="toggleDropdown({{ address.id }})">&#8942;</span>
+                            <div id="dropdown-{{ address.id }}" class="address-menu-dropdown">
+                                <a href="#" onclick="openEditModal({{ address.id }})">Edit</a>
+                                <a href="{% url 'delete_address' address.id %}" onclick="return confirm('Are you sure you want to delete this address?')">Delete</a>
+                            </div>
+                        </div>
+                        <div class="address-card-body">
+                            <div class="address-name">{{ address.full_name }}</div>
+                            <div class="address-details">
+                                {{ address.address }}, {{ address.city }}, {{ address.state }} - {{ address.zip_code }}<br>
+                                Phone: {{ address.phone }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <p>No saved addresses. Add a new address using the button above.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- Manage Addresses Section End -->
+
+    <!-- Edit Address Modal -->
+    <div id="editAddressModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Edit Address</h2>
+            <form id="editAddressForm" method="post" action="">
+                {% csrf_token %}
+                <input type="hidden" id="edit_address_id" name="address_id">
+                <div class="checkout__input">
+                    <p>Address Type<span>*</span></p>
+                    <input type="text" id="edit_address_type" name="address_type" required>
+                </div>
+                <div class="checkout__input">
+                    <p>Full Name<span>*</span></p>
+                    <input type="text" id="edit_full_name" name="full_name" required>
+                </div>
+                <div class="checkout__input">
+                    <p>Phone Number<span>*</span></p>
+                    <input type="text" id="edit_phone" name="phone" required>
+                </div>
+                <div class="checkout__input">
+                    <p>Address<span>*</span></p>
+                    <input type="text" id="edit_address" name="address" required>
+                </div>
+                <div class="checkout__input">
+                    <p>City<span>*</span></p>
+                    <input type="text" id="edit_city" name="city" required>
+                </div>
+                <div class="checkout__input">
+                    <p>State<span>*</span></p>
+                    <input type="text" id="edit_state" name="state" required>
+                </div>
+                <div class="checkout__input">
+                    <p>ZIP Code<span>*</span></p>
+                    <input type="text" id="edit_zip_code" name="zip_code" required>
+                </div>
+                <button type="submit" class="site-btn">Update Address</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-7">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                        cilisis.</p>
+                        <div class="footer__payment">
+                            <a href="#"><img src="img/payment/payment-1.png" alt=""></a>
+                            <a href="#"><img src="img/payment/payment-2.png" alt=""></a>
+                            <a href="#"><img src="img/payment/payment-3.png" alt=""></a>
+                            <a href="#"><img src="img/payment/payment-4.png" alt=""></a>
+                            <a href="#"><img src="img/payment/payment-5.png" alt=""></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-5">
+                    <div class="footer__widget">
+                        <h6>Quick links</h6>
+                        <ul>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Blogs</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">FAQ</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-4">
+                    <div class="footer__widget">
+                        <h6>Account</h6>
+                        <ul>
+                            <li><a href="#">My Account</a></li>
+                            <li><a href="#">Orders Tracking</a></li>
+                            <li><a href="#">Checkout</a></li>
+                            <li><a href="#">Wishlist</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-8 col-sm-8">
+                    <div class="footer__newslatter">
+                        <h6>NEWSLETTER</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Email">
+                            <button type="submit" class="site-btn">Subscribe</button>
+                        </form>
+                        <div class="footer__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    <div class="footer_copyright_text">
+                        <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+                    </div>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+
+
+    <!-- Js Plugins -->
+    <script src="{% static "shop/js/jquery-3.3.1.min.js" %}"></script>
+    <script src="{% static "shop/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "shop/js/jquery.magnific-popup.min.js" %}"></script>
+    <script src="{% static "shop/js/jquery-ui.min.js" %}"></script>
+    <script src="{% static "shop/js/mixitup.min.js" %}"></script>
+    <script src="{% static "shop/js/jquery.countdown.min.js" %}"></script>
+    <script src="{% static "shop/js/jquery.slicknav.js" %}"></script>
+    <script src="{% static "shop/js/owl.carousel.min.js" %}"></script>
+    <script src="{% static "shop/js/jquery.nicescroll.min.js" %}"></script>
+    <script src="{% static "shop/js/main.js" %}"></script>
+
+    <!-- Add this script before the closing </body> tag -->
+    <script>
+        document.getElementById('showAddressForm').addEventListener('click', function() {
+            var form = document.getElementById('addressForm');
+            // Toggle the form's visibility
+            form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+        });
+
+        function toggleDropdown(addressId) {
+            var dropdown = document.getElementById('dropdown-' + addressId);
+            if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+                dropdown.style.display = 'block';
+            } else {
+                dropdown.style.display = 'none';
+            }
+        }
+
+        function openEditModal(addressId) {
+            var modal = document.getElementById('editAddressModal');
+            modal.style.display = 'block';
+            
+            // Populate form with address data
+            var addressCard = document.querySelector(`#dropdown-${addressId}`).closest('.address-card');
+            document.getElementById('edit_address_id').value = addressId;
+            document.getElementById('edit_address_type').value = addressCard.querySelector('.address-type').textContent.trim();
+            document.getElementById('edit_full_name').value = addressCard.querySelector('.address-name').textContent.trim();
+            var details = addressCard.querySelector('.address-details').textContent.trim().split('\n');
+            var addressParts = details[0].split(',');
+            document.getElementById('edit_address').value = addressParts[0].trim();
+            document.getElementById('edit_city').value = addressParts[1].trim();
+            var stateZip = addressParts[2].trim().split('-');
+            document.getElementById('edit_state').value = stateZip[0].trim();
+            document.getElementById('edit_zip_code').value = stateZip[1].trim();
+            document.getElementById('edit_phone').value = details[1].split(':')[1].trim();
+            
+            // Set form action
+            document.getElementById('editAddressForm').action = `/shop/edit-address/${addressId}/`;
+        }
+
+        // Combined window.onclick function
+        window.onclick = function(event) {
+            if (!event.target.matches('.address-menu')) {
+                var dropdowns = document.getElementsByClassName("address-menu-dropdown");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === 'block') {
+                        openDropdown.style.display = 'none';
+                    }
+                }
+            }
+            
+            var modal = document.getElementById('editAddressModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function closeEditModal() {
+            var modal = document.getElementById('editAddressModal');
+            modal.style.display = 'none';
+        }
+
+        // Add this new function
+        document.getElementById('editAddressForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var form = this;
+            var formData = new FormData(form);
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload(); // Reload the page to show updated address
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the address. Please try again later.');
+            });
+        });
+    </script>
+
+</body>
+
+</html>

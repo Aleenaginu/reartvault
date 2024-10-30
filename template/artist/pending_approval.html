@@ -1,0 +1,170 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pending Approval</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: url("{% static 'profile.webp' %}") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #faefef;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="file"] {
+            padding: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #82b4eb;
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            width: 150px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Your account is pending approval</h2>
+        <p>Please upload your certificate for approval.</p>
+        <form method="post" action="{% url 'upload_certificate' %}" enctype="multipart/form-data" id="upload-certificate-form">
+            {% csrf_token %}
+            <input type="text" name="username" class="form-control" placeholder="Enter your username" required>
+            <div class="form-group">
+                <label for="certificate">Certificate (PDF only):</label>
+                <input type="file" id="certificate" name="certificate" accept="application/pdf" required>
+                <p id="message"></p>
+            </div>
+            <a href="{% url 'userlogin' %}" class="btn">Back</a>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('certificate').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const messageElement = document.getElementById('message');
+
+            if (file) {
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                const isPDF = fileExtension === 'pdf';
+                const isPDFMime = file.type === 'application/pdf';
+
+                if (isPDF && isPDFMime) {
+                    messageElement.textContent = 'The file is a valid PDF.';
+                    messageElement.style.color = 'green';
+                } else {
+                    messageElement.textContent = 'Please upload a valid PDF file.';
+                    messageElement.style.color = 'red';
+                }
+            }
+        });
+
+        document.getElementById('upload-certificate-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            var formData = new FormData(this);
+
+            fetch('{% url "upload_certificate" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire('Success', data.message, 'success')
+                        .then(() => {
+                            window.location.href = '{% url "userlogin" %}';
+                        });
+                } else {
+                    Swal.fire('Error', data.error, 'error');
+                }
+            })
+            .catch(error => {
+                Swal.fire('Error', 'An error occurred', 'error');
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            {% for message in messages %}
+                Swal.fire({
+                    icon: '{% if message.tags %}{{ message.tags }}{% else %}info{% endif %}',
+                    title: '{{ message }}',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            {% endfor %}
+        });
+    </script>
+</body>
+</html>

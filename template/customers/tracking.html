@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Order Status</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Style for the status bar */
+        .track-container {
+            max-width: 800px; /* Set a max width for the container */
+            margin: 0 auto; /* Center the container */
+            padding: 20px; /* Add some padding */
+            background-color: #f9f9f9; /* Light background for better contrast */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        .track {
+            position: relative;
+            background-color: #ddd;
+            height: 7px;
+            display: flex;
+            margin-bottom: 30px; /* Reduced margin */
+            margin-top: 20px; /* Reduced margin */
+        }
+
+        .track .step {
+            flex-grow: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .track .step.active:before {
+            background: #05a134;
+        }
+
+        .track .step::before {
+            height: 7px;
+            position: absolute;
+            content: "";
+            width: 100%;
+            left: 0;
+            top: 18px;
+        }
+
+        .track .step.active .icon {
+            background: #038a2c;
+            color: #fff;
+        }
+
+        .track .icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 100%;
+            background: #ddd;
+        }
+
+        .track .step.active .text {
+            font-weight: 400;
+            color: #000;
+        }
+
+        .track .text {
+            display: block;
+            margin-top: 7px;
+        }
+        .back-button {
+            margin: 20px; /* Add margin for spacing */
+            padding: 10px 20px; /* Add padding for button */
+            background-color: #007bff; /* Blue background for button */
+            color: white; /* White text color */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+
+        .back-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Orders</h1>
+    
+    {% for order in orders %}
+    <div class="track-container"> <!-- Added a container for styling -->
+        <h4>Order #{{ order.id }}: {{ order.product_name }}</h4>
+        <div class="track">
+            <!-- Pending -->
+            <div class="step {% if order.status == 'Pending' or order.status == 'Processing' or order.status == 'Shipped' or order.status == 'Delivered' %}active{% endif %}">
+                <span class="icon"><i class="fa fa-spinner" style="padding-top:3px; padding-right:25px;"></i></span>
+                <span class="text">Order Pending</span>
+            </div>
+            
+            <!-- Processing -->
+            <div class="step {% if order.status == 'Processing' or order.status == 'Shipped' or order.status == 'Delivered' %}active{% endif %}">
+                <span class="icon"><i class="fa fa-check" style="padding-top:3px; padding-right:25px;"></i></span>
+                <span class="text">Order Processing</span>
+            </div>
+            
+            <!-- Shipped -->
+            <div class="step {% if order.status == 'Shipped' or order.status == 'Delivered' %}active{% endif %}">
+                <span class="icon"><i class="fa fa-truck" style="padding-top:3px; padding-right:25px;"></i></span>
+                <span class="text">Shipped</span>
+            </div>
+            
+            <!-- Delivered -->
+            <div class="step {% if order.status == 'Delivered' %}active{% endif %}">
+                <span class="icon"><i class="fa fa-home" style="padding-top:3px; padding-right:25px;"></i></span>
+                <span class="text">Delivered</span>
+            </div>
+        </div>
+    </div> <!-- End of track-container -->
+    {% endfor %}
+    <button class="back-button" onclick="window.location.href='{% url 'shop_index' %}'">Back to Home</button> 
+   
+</body>
+</html>

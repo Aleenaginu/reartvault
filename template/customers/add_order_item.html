@@ -1,0 +1,20 @@
+<h2>Add Item to Order #{{ order.id }}</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <div>
+        <label for="product">Product:</label>
+        <select name="product_id" id="product">
+            {% for product in products %}
+                <option value="{{ product.id }}">{{ product.name }} - ${{ product.price }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="quantity">Quantity:</label>
+        <input type="number" name="quantity" id="quantity" value="1" min="1" required>
+    </div>
+    <button type="submit">Add to Order</button>
+</form>
+
+<a href="{% url 'view_order_items' order.id %}">Back to Order Items</a>

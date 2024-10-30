@@ -1,0 +1,1075 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Responsive Admin Dashboard | ReArt Vault</title>
+  <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <!-- Boxicons CDN Link -->
+  <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <!-- plugins:css -->
+ <link rel="stylesheet" href="{% static "dash/vendors/mdi/css/materialdesignicons.min.css" %}">
+ <link rel="stylesheet" href="{% static "dash/vendors/ti-icons/css/themify-icons.css" %}">
+ <link rel="stylesheet" href="{% static "dash/vendors/css/vendor.bundle.base.css" %}">
+ <link rel="stylesheet" href="{% static "dash/vendors/font-awesome/css/font-awesome.min.css" %}">
+ <!-- endinject -->
+ <!-- Plugin css for this page -->
+ <link rel="stylesheet" href="{% static "dash/vendors/font-awesome/css/font-awesome.min.css" %}" />
+ <link rel="stylesheet" href="{% static "dash/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" %}">
+ <!-- End plugin css for this page -->
+ <!-- inject:css -->
+ <!-- endinject -->
+ <!-- Layout styles -->
+ <link rel="stylesheet" href="{% static "dash/css/style.css" %}">
+ <!-- End layout styles -->
+ <link rel="shortcut icon" href="{% static "dash/images/favicon.png" %}" />
+
+  <script>
+    document.querySelector('.profile-details').addEventListener('click', function () {
+      this.querySelector('.dropdown-menu').classList.toggle('show');
+    });
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+  *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+  .sidebar{
+    position: fixed;
+    height: 100%;
+    width: 240px;
+    background: #0A2558;
+    transition: all 0.5s ease;
+  }
+  .sidebar.active{
+    width: 60px;
+  }
+  .sidebar .logo-details{
+    height: 80px;
+    display: flex;
+    align-items: center;
+  }
+  .sidebar .logo-details i{
+    font-size: 28px;
+    font-weight: 500;
+    color: #fff;
+    min-width: 60px;
+    text-align: center
+  }
+  .sidebar .logo-details .logo_name{
+    color: #fff;
+    font-size: 24px;
+    font-weight: 500;
+  }
+  .sidebar .nav-links{
+    margin-top: 10px;
+  }
+  .sidebar .nav-links li{
+    position: relative;
+    list-style: none;
+    height: 50px;
+  }
+  .sidebar .nav-links li a{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.4s ease;
+  }
+  .sidebar .nav-links li a.active{
+    background: #081D45;
+  }
+  .sidebar .nav-links li a:hover{
+    background: #081D45;
+  }
+  .sidebar .nav-links li i{
+    min-width: 60px;
+    text-align: center;
+    font-size: 18px;
+    color: #fff;
+  }
+  .sidebar .nav-links li a .links_name{
+    color: #fff;
+    font-size: 15px;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+  .sidebar .nav-links .log_out{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+  .home-section{
+    position: relative;
+    background: #f5f5f5;
+    min-height: 100vh;
+    width: calc(100% - 240px);
+    left: 240px;
+    transition: all 0.5s ease;
+  }
+  .sidebar.active ~ .home-section{
+    width: calc(100% - 60px);
+    left: 60px;
+  }
+  .home-section nav{
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    width: calc(100% - 240px);
+    left: 240px;
+    z-index: 100;
+    padding: 0 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    transition: all 0.5s ease;
+  }
+  .sidebar.active ~ .home-section nav{
+    left: 60px;
+    width: calc(100% - 60px);
+  }
+  .home-section nav .sidebar-button{
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 500;
+  }
+  nav .sidebar-button i{
+    font-size: 35px;
+    margin-right: 10px;
+  }
+  .home-section nav .search-box{
+    position: relative;
+    height: 50px;
+    max-width: 550px;
+    width: 100%;
+    margin: 0 20px;
+  }
+  nav .search-box input{
+    height: 100%;
+    width: 100%;
+    outline: none;
+    background: #F5F6FA;
+    border: 2px solid #EFEEF1;
+    border-radius: 6px;
+    font-size: 18px;
+    padding: 0 15px;
+  }
+  nav .search-box .bx-search{
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    background: #2697FF;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 4px;
+    line-height: 40px;
+    text-align: center;
+    color: #fff;
+    font-size: 22px;
+    transition: all 0.4 ease;
+  }
+  .home-section nav .profile-details{
+    display: flex;
+    align-items: center;
+    background: #F5F6FA;
+    border: 2px solid #EFEEF1;
+    border-radius: 6px;
+    height: 50px;
+    min-width: 190px;
+    padding: 0 15px 0 2px;
+  }
+  nav .profile-details img{
+    height: 40px;
+    width: 40px;
+    border-radius: 6px;
+    object-fit: cover;
+  }
+  nav .profile-details .admin_name{
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+    margin: 0 10px;
+    white-space: nowrap;
+  }
+  nav .profile-details i{
+    font-size: 25px;
+    color: #333;
+  }
+  .home-section .home-content{
+    position: relative;
+    padding-top: 104px;
+  }
+  .home-content .overview-boxes{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 0 20px;
+    margin-bottom: 26px;
+  }
+  .overview-boxes .box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% / 4 - 15px);
+    background: #fff;
+    padding: 15px 14px;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+  }
+  .overview-boxes .box-topic{
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .home-content .box .number{
+    display: inline-block;
+    font-size: 35px;
+    margin-top: -6px;
+    font-weight: 500;
+  }
+  .home-content .box .indicator{
+    display: flex;
+    align-items: center;
+  }
+  .home-content .box .indicator i{
+    height: 20px;
+    width: 20px;
+    background: #8FDACB;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 20px;
+    margin-right: 5px;
+  }
+  .box .indicator i.down{
+    background: #e87d88;
+  }
+  .home-content .box .indicator .text{
+    font-size: 12px;
+  }
+  .home-content .box .cart{
+    display: inline-block;
+    font-size: 32px;
+    height: 50px;
+    width: 50px;
+    background: #cce5ff;
+    line-height: 50px;
+    text-align: center;
+    color: #66b0ff;
+    border-radius: 12px;
+    margin: -15px 0 0 6px;
+  }
+  .home-content .box .cart.two{
+     color: #2BD47D;
+     background: #C0F2D8;
+   }
+  .home-content .box .cart.three{
+     color: #ffc233;
+     background: #ffe8b3;
+   }
+  .home-content .box .cart.four{
+     color: #e05260;
+     background: #f7d4d7;
+   }
+  .home-content .total-order{
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .home-content .sales-boxes{
+    display: flex;
+    justify-content: space-between;
+    /* padding: 0 20px; */
+  }
+  
+  /* left box */
+  .home-content .sales-boxes .recent-sales{
+    width: 65%;
+    background: #fff;
+    padding: 20px 30px;
+    margin: 0 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  }
+  .home-content .sales-boxes .sales-details{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sales-boxes .box .title{
+    font-size: 24px;
+    font-weight: 500;
+    /* margin-bottom: 10px; */
+  }
+  .sales-boxes .sales-details li.topic{
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .sales-boxes .sales-details li{
+    list-style: none;
+    margin: 8px 0;
+  }
+  .sales-boxes .sales-details li a{
+    font-size: 18px;
+    color: #333;
+    font-size: 400;
+    text-decoration: none;
+  }
+  .sales-boxes .box .button{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: space-around;
+  }
+  .sales-boxes .box .button a{
+    color: #fff;
+    background: #0A2558;
+    padding: 4px 12px;
+    font-size: 15px;
+    font-weight: 400;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  .sales-boxes .box .button a:hover{
+    background:  #0d3073;
+  }
+  
+  /* Right box */
+  .home-content .sales-boxes .top-sales{
+    width: 35%;
+    background: #fff;
+    padding: 20px 30px;
+    margin: 0 20px 0 0;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  }
+  .sales-boxes .top-sales li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+  }
+  .sales-boxes .top-sales li a img{
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-right: 10px;
+    background: #333;
+  }
+  .sales-boxes .top-sales li a{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  .sales-boxes .top-sales li .product,
+  .price{
+    font-size: 17px;
+    font-weight: 400;
+    color: #333;
+  }
+  /* Responsive Media Query */
+  @media (max-width: 1240px) {
+    .sidebar{
+      width: 60px;
+    }
+    .sidebar.active{
+      width: 220px;
+    }
+    .home-section{
+      width: calc(100% - 60px);
+      left: 60px;
+    }
+    .sidebar.active ~ .home-section{
+      /* width: calc(100% - 220px); */
+      overflow: hidden;
+      left: 220px;
+    }
+    .home-section nav{
+      width: calc(100% - 60px);
+      left: 60px;
+    }
+    .sidebar.active ~ .home-section nav{
+      width: calc(100% - 220px);
+      left: 220px;
+    }
+  }
+  @media (max-width: 1150px) {
+    .home-content .sales-boxes{
+      flex-direction: column;
+    }
+    .home-content .sales-boxes .box{
+      width: 100%;
+      overflow-x: scroll;
+      margin-bottom: 30px;
+    }
+    .home-content .sales-boxes .top-sales{
+      margin: 0;
+    }
+  }
+  @media (max-width: 1000px) {
+    .overview-boxes .box{
+      width: calc(100% / 2 - 15px);
+      margin-bottom: 15px;
+    }
+  }
+  @media (max-width: 700px) {
+    nav .sidebar-button .dashboard,
+    nav .profile-details .admin_name,
+    nav .profile-details i{
+      display: none;
+    }
+    .home-section nav .profile-details{
+      height: 50px;
+      min-width: 40px;
+    }
+    .home-content .sales-boxes .sales-details{
+      width: 560px;
+    }
+  }
+  @media (max-width: 550px) {
+    .overview-boxes .box{
+      width: 100%;
+      margin-bottom: 15px;
+    }
+    .sidebar.active ~ .home-section nav .profile-details{
+      display: none;
+    }
+  }
+    @media (max-width: 400px) {
+    .sidebar{
+      width: 0;
+    }
+    .sidebar.active{
+      width: 60px;
+    }
+    .home-section{
+      width: 100%;
+      left: 0;
+    }
+    .sidebar.active ~ .home-section{
+      left: 60px;
+      width: calc(100% - 60px);
+    }
+    .home-section nav{
+      width: 100%;
+      left: 0;
+    }
+    .sidebar.active ~ .home-section nav{
+      left: 60px;
+      width: calc(100% - 60px);
+    }
+  }
+  .profile-details .dropdown-menu {
+    display: none;
+  }
+
+  .profile-details .dropdown-menu.show {
+    display: block;
+  }
+
+
+  .profile-details {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .profile-details img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+  }
+
+  .profile-details .admin_name {
+    margin-left: 10px;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .profile-details .bx-chevron-down {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .profile-details .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .profile-details .dropdown-menu li {
+    list-style: none;
+  }
+
+  .profile-details .dropdown-menu li a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .profile-details .dropdown-menu li a:hover {
+    background-color: #f0f0f0;
+  }
+
+  .profile-details:hover .dropdown-menu {
+    display: block;
+  }
+
+  .sales-details {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .details {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* Added gap between items */
+  }
+
+  .detail-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    /* Gap between image and text */
+  }
+
+  .item-pic {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+  }
+
+  .item-pic:hover {
+    transform: scale(1.1);
+  }
+
+  .detail-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    /* Adjust the spacing between list items if needed */
+  }
+
+  .item-pic {
+    width: 150px;
+    /* Adjust size as needed */
+    height: auto;
+    margin-right: 20px;
+    /* Adjust spacing between image and text */
+  }
+
+  .item-text {
+    font-weight: bold;
+    font-size: 1.2em;
+    /* Adjust the size as needed */
+    margin-bottom: 5px;
+    /* Space between heading and description */
+  }
+</style>
+
+<body>
+  <div class="sidebar">
+    <div class="logo-details">
+      <!-- <i class=''></i> -->
+      <span class="logo_name" style="font-size: 30px; text-align: center; font-weight: 700; color: #b5c8c1;">ReArt Vault</span>
+    </div>
+    <ul class="nav-links">
+      <li>
+        <a href="{% url 'admin_dashboard' %}" class="active">
+          <i class='bx bx-grid-alt'></i>
+          <span class="links_name">Admin Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'add_medium_of_waste' %}">
+          <i class='bx bx-box'></i>
+          <span class="links_name">Add Medium </span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'approve_artists' %}">
+          <i class='bx bx-list-ul'></i>
+          <span class="links_name">Manage Artists</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'donation_listview' %}">
+          <i class='bx bx-pie-chart-alt-2'></i>
+          <span class="links_name">Manage Donations</span>
+        </a>
+      </li>
+  
+      <li>
+        <a href="{% url 'set_rates' %}">
+          <i class='bx bx-message'></i>
+          <span class="links_name">Set Pricing</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'add_category' %}">
+          <i class='bx bx-box'></i>
+          <span class="links_name">Add Category</span>
+        </a>
+      </li>
+      <!-- <li>
+        <a href="#">
+          <i class='bx bx-message'></i>
+          <span class="links_name">Conatct</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class='bx bx-heart'></i>
+          <span class="links_name">Favorites</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class='bx bx-cog'></i>
+          <span class="links_name">Setting</span>
+        </a> 
+      </li>-->
+      <li class="log_out">
+        <a href="{% url 'userlogout' %}">
+          <i class='bx bx-log-out'></i>
+          <span class="links_name">Log out</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <section class="home-section">
+    <nav>
+      <div class="sidebar-button">
+        <i class='bx bx-menu sidebarBtn'></i>
+        <span class="dashboard"> Dashboard</span>
+      </div>
+      <form method="GET" action="{% url 'admin_search' %}">
+      <div class="search-box">
+        <input type="text" name="query" placeholder="Search...">
+       <button type="submit"><i class='bx bx-search'></i></button> 
+      </div>
+    </form>
+      <div class="profile-details">
+        <img src="{{adminclick.profile_pic.url}}" alt="">
+        <span class="admin_name" style="font-size: 25px; font-weight: 900; color: #010302;">Hi {{user.username}}</span>
+        <i class='bx bx-chevron-down'></i>
+        <ul class="dropdown-menu">
+          <!-- <li><a href="{% url 'userprofileartist' %}">View Profile</a></li>
+          <li><a href="{% url 'profile_update' %}">Edit Profile</a></li>
+          <li><a href="#">Settings</a></li> -->
+          <li><a href="{% url 'userlogout' %}">Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="home-content">
+      <div class="overview-boxes">
+        <div class="box" style="background-color:rgb(243, 212, 200);">
+          <div class="right-side">
+            <div class="box-topic">Total Mediums</div>
+            <div class="number">{{ total_medium_of_waste }}</div>
+            <div class="indicator">
+              <!-- <i class='bx bx-up-arrow-alt'></i> -->
+              <!-- <span class="text">Up from yesterday</span> -->
+            </div>
+          </div>
+          <!-- <i class='bx bx-cart-alt cart'></i> -->
+        </div>
+        <div class="box" style="background-color:rgb(188, 233, 188);">
+          <div class="right-side">
+            <div class="box-topic">Total Donations</div>
+            <div class="number">{{total_donations}}</div>
+            <div class="indicator">
+              <!-- <i class='bx bx-up-arrow-alt'></i> -->
+              <!-- <span class="text">Up from yesterday</span> -->
+            </div>
+          </div>
+          <!-- <i class='bx bxs-cart-add cart two'></i> -->
+        </div>
+        <div class="box" style="background-color:rgb(240, 240, 205);">
+          <div class="right-side">
+            <div class="box-topic">Total Artists</div>
+            <div class="number"> {{total_artists}}</div>
+            <div class="indicator">
+              <!-- <i class='bx bx-up-arrow-alt'></i> -->
+              <!-- <span class="text">Up from yesterday</span> -->
+            </div>
+          </div>
+          <!-- <i class='bx bx-cart cart three'></i> -->
+        </div>
+        <div class="box" style="background-color:rgb(240, 205, 228);">
+          <div class="right-side">
+            <div class="box-topic">Total Users</div>
+            <div class="number">0</div>
+            <div class="indicator">
+              <!-- <i class='bx bx-down-arrow-alt down'></i> -->
+              <!-- <span class="text">Down From Today</span> -->
+            </div>
+          </div>
+          <!-- <i class='bx bxs-cart-download cart four'></i> -->
+        </div>
+      </div>
+   
+      <div class="row">
+        <div class="col-md-7 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="clearfix">
+                        <h4 class="card-title float-start">Donations Status Overview</h4>
+                        <div id="visit-sale-chart-legend" class="rounded-legend legend-horizontal legend-top-right float-end"></div>
+                    </div>
+                    <canvas id="donation-status-chart" class="mt-4"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Donation Breakdown</h4>
+                    <div class="doughnutjs-wrapper d-flex justify-content-center">
+                        <canvas id="traffic-chart"></canvas>
+                    </div>
+                    <div id="traffic-chart-legend" class="rounded-legend legend-vertical legend-bottom-left pt-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        var ctx = document.getElementById('donation-status-chart').getContext('2d');
+        var donationStatusChart = new Chart(ctx, {
+            type: 'bar', 
+            data: {
+                labels: ['Total Donations', 'Accepted', 'Rejected', 'Pending'],
+                datasets: [{
+                    label: 'Donations Overview',
+                    data: [
+                        {{ total_donations }},
+                        {{ total_accepted_donations }},
+                        {{ total_rejected_donations }},
+                        {{ total_pending_donations }}
+                    ],
+                    backgroundColor: ['#4caf50', '#2196f3', '#f44336', '#ff9800'],
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    
+        var trafficCtx = document.getElementById('traffic-chart').getContext('2d');
+        var trafficChart = new Chart(trafficCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Accepted', 'Rejected', 'Pending'],
+                datasets: [{
+                    label: 'Donation Status Breakdown',
+                    data: [
+                        {{ total_accepted_donations }},
+                        {{ total_rejected_donations }},
+                        {{ total_pending_donations }}
+                    ],
+                    backgroundColor: ['#4caf50', '#f44336', '#ff9800'],
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
+  
+ 
+      <div class="row">
+        <div class="col-lg-5 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body p-0 d-flex">
+              <div id="inline-datepicker" class="datepicker datepicker-custom"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title text-dark">Todo List</h4>
+              <div class="add-items d-flex">
+                <input type="text" class="form-control todo-list-input" placeholder="What do you need to do today?">
+                <button class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn" id="add-task">Add</button>
+              </div>
+              <div class="list-wrapper">
+                <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
+                  <li>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="checkbox" type="checkbox"> Test purpose only </label>
+                    </div>
+                    <i class="remove mdi mdi-close-circle-outline"></i>
+                  </li>
+                  <li class="completed">
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="checkbox" type="checkbox" checked>Test purpose only </label>
+                    </div>
+                    <i class="remove mdi mdi-close-circle-outline"></i>
+                  </li>
+                  <li>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="checkbox" type="checkbox"> Test purpose only</label>
+                    </div>
+                    <i class="remove mdi mdi-close-circle-outline"></i>
+                  </li>
+                  <li>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="checkbox" type="checkbox">Test purpose only </label>
+                    </div>
+                    <i class="remove mdi mdi-close-circle-outline"></i>
+                  </li>
+                  <li class="completed">
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="checkbox" type="checkbox" checked> Test purpose only</label>
+                    </div>
+                    <i class="remove mdi mdi-close-circle-outline"></i>
+                  </li>
+                  <li>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="checkbox" type="checkbox">Test purpose only </label>
+                    </div>
+                    <i class="remove mdi mdi-close-circle-outline"></i>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-7 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+         </div>
+          </div>
+        </div>
+     
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+   
+    <!-- partial -->
+  </div>
+  <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>
+
+       <div class="sales-boxes" >
+        <div class="recent-sales box" style="background-color:rgb(205, 231, 240);">
+          <div class="title">More About ReArt Vault </div>
+          <div class="sales-details">
+            <ul class="details">
+              <li class="detail-item" style="display: flex; align-items: center;">
+                <img src="{% static 'col.jpg' %}" alt="Waste materials" class="item-pic"
+                  style="width: 150px; height: auto; margin-right: 20px;">
+                <div>
+                  <span class="item-text"
+                    style="display: block; font-weight: bold; font-size: 1.2em; margin-bottom: 5px;">Transforming Trash:
+                    Your Waste, Our Treasure.</span>
+                  <p style="margin: 0;">We gather discarded materials, giving them a second chance to shine.</p>
+                </div>
+              </li>
+              <li class="detail-item" style="display: flex; align-items: center;">
+                <img src="{% static 'donorlog.jpg' %}" alt="Waste materials" class="item-pic"
+                  style="width: 150px; height: auto; margin-right: 20px;">
+                <div>
+                  <span class="item-text"
+                    style="display: block; font-weight: bold; font-size: 1.2em; margin-bottom: 5px;">Passing the Baton: Waste to Wonder in Artistic Hands.</span>
+                  <p style="margin: 0;">Our talented artists receive the collected materials, ready to work their magic.</p>
+                </div>
+              </li>
+             
+              
+              <li class="detail-item" style="display: flex; align-items: center;">
+                <img src="{% static 'seg.jpg' %}" alt="Waste materials" class="item-pic"
+                  style="width: 150px; height: auto; margin-right: 20px;">
+                <div>
+                  <span class="item-text"
+                    style="display: block; font-weight: bold; font-size: 1.2em; margin-bottom: 5px;">Sorting the Gems: Separating to Innovate. </span>
+                  <p style="margin: 0;">Materials are carefully sorted to maximize their creative potential.</p>
+                </div>
+              </li>
+              <li class="detail-item" style="display: flex; align-items: center;">
+                <img src="{% static 'mak.jpg' %}" alt="Waste materials" class="item-pic"
+                  style="width: 150px; height: auto; margin-right: 20px;">
+                <div>
+                  <span class="item-text"
+                    style="display: block; font-weight: bold; font-size: 1.2em; margin-bottom: 5px;">Crafting Magic: Turning Scraps into Masterpieces.</span>
+                  <p style="margin: 0;">Artists skillfully transform the sorted materials into unique and beautiful products.</p>
+                </div>
+              </li>
+              <li class="detail-item" style="display: flex; align-items: center;">
+                <img src="{% static 'fin.jpg' %}" alt="Waste materials" class="item-pic"
+                  style="width: 150px; height: auto; margin-right: 20px;">
+                <div>
+                  <span class="item-text"
+                    style="display: block; font-weight: bold; font-size: 1.2em; margin-bottom: 5px;">Discover and Delight: Unique Upcycled Art Awaits!</span>
+                  <p style="margin: 0;">The finished masterpieces are displayed for purchase, ready to find a new home.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="button">
+            <a href="#">See All</a>
+          </div>
+        </div>
+        <div class="top-sales box"  style="background-color:rgb(205, 231, 240);">
+          <div class="title">Donate and make Wonders</div>
+          <ul class="top-sales-details">
+            <li>
+              <a href="#">
+                <img src="{% static 'i1.jpg' %}" alt="">
+                <span class="product">Vuitton Sunglasses</span>
+              </a>
+              <span class="price">$1107</span>
+            </li>
+            <li>
+              <a href="#">
+                <img src="{% static 'i2.jpg' %}" alt="">
+                <span class="product">Hourglass Jeans</span>
+              </a>
+              <span class="price">$1567</span>
+            </li>
+            <li>
+              <a href="#">
+                <img src="{% static 'i3.jpg' %}" alt="">
+                <span class="product">Nike Sport Shoe</span>
+              </a>
+              <span class="price">$1234</span>
+            </li>
+            <li>
+              <a href="#">
+                <img src="{% static 'i4.jpg' %}" alt="">
+                <span class="product">Hermes Silk Scarves.</span>
+              </a>
+              <span class="price">$2312</span>
+            </li>
+            <li>
+              <a href="#">
+                <img src="{% static 'i5.jpg' %}" alt="">
+                <span class="product">Succi Ladies Bag</span>
+              </a>
+              <span class="price">$1456</span>
+            </li>
+            <li>
+              <a href="#">
+                <img src="{% static 'i6.jpg' %}" alt="">
+                <span class="product">Gucci Women's Bags</span>
+              </a>
+              <span class="price">$2345</span>
+            </li>
+            <li>
+              <a href="#">
+                <img src="{% static 'i7.jpg' %}" alt="">
+                <span class="product">Adidas Running Shoe</span>
+              </a>
+              <span class="price">$2345</span>
+            </li>
+            <li>
+              <a href="#">
+                <img src="{% static 'i8.jpg' %}" alt="">
+                <span class="product">Bilack Wear's Shirt</span>
+              </a>
+              <span class="price">$1245</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div> 
+  </section>
+
+  <script>
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".sidebarBtn");
+    sidebarBtn.onclick = function () {
+      sidebar.classList.toggle("active");
+      if (sidebar.classList.contains("active")) {
+        sidebarBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+      } else {
+        sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+      }
+    }
+  </script>
+  <script>
+     document.addEventListener("DOMContentLoaded", function () {
+      {% for message in messages %}
+          Swal.fire({
+              icon: '{% if message.tags %}{{ message.tags }}{% else %}info{% endif %}', 
+              title: '{{ message }}',
+              showConfirmButton: false,
+              timer: 3000
+          });
+      {% endfor %}
+  });
+      </script>
+      <!-- container-scroller -->
+<!-- plugins:js -->
+<script src="{% static "dash/vendors/js/vendor.bundle.base.js" %}"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="{% static "dash/vendors/chart.js/chart.umd.js" %}"></script>
+<script src="{% static "dash/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js" %}"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="{% static "dash/js/off-canvas.js" %}"></script>
+<script src="{% static "dash/js/misc.js" %}"></script>
+<script src="{% static "dash/js/settings.js" %}"></script>
+<script src="{% static "dash/js/todolist.js" %}"></script>
+<script src="{% static "dash/js/jquery.cookie.js" %}"></script>
+<!-- endinject -->
+<!-- Custom js for this page -->
+<script src="{% static "dash/js/dashboard.js" %}"></script>
+<!-- End custom js for this page -->
+</body>
+
+</html>

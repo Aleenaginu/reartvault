@@ -1,0 +1,30 @@
+<h2>Order Items for Order #{{ order.id }}</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in order_items %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.price }}</td>
+            <td>${{ item.quantity * item.price }}</td>
+            <td>
+                <a href="{% url 'update_order_item' item.id %}">Edit</a> |
+                <a href="{% url 'delete_order_item' item.id %}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'add_order_item' order.id %}">Add Item</a>
+<a href="{% url 'order_summary' order.id %}">Back to Order Summary</a>

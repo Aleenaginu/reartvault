@@ -1,0 +1,83 @@
+<head>
+  <style>
+    /* New styles for search results page */
+    body {
+      font-family: 'Verdana', sans-serif;
+      background-color: #eaeaea;
+      margin: 0;
+      padding: 30px;
+    }
+
+    h2, h3 {
+      color: #444;
+      text-align: center;
+    }
+
+    .btn-dashboard {
+      padding: 12px 20px;
+      border-radius: 8px;
+      background-color: #4CAF50; /* Green */
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      display: inline-block;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .btn-dashboard:hover {
+      background-color: #45a049; /* Darker green */
+    }
+
+    ul {
+      list-style-type: square;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      background: #fff;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+
+<body>
+  <a href="{% url 'admin_dashboard' %}" class="btn-dashboard">Back to Admin Dashboard</a>
+  <h2>Search Results</h2>
+
+  {% if artists %}
+    <h3>Artists:</h3>
+    <ul>
+        {% for artist in artists %}
+            <li>{{ artist.user.username }} - Mediums: 
+                {% for medium in artist.mediums.all %}
+                    {{ medium.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </li>
+        {% endfor %}
+    </ul>
+  {% else %}
+    <p>No artists found matching your search .</p>
+  {% endif %}
+
+  {% if accepted_donations %}
+    <h3>Accepted Donations for Medium:</h3>
+    <ul>
+        {% for donation in accepted_donations %}
+            <li>
+                Donor: {{ donation.donor.user.username }} - 
+                Medium: {{ donation.medium_of_waste.name }} - 
+                Quantity: {{ donation.quantity }} kg - 
+                Location: {{ donation.location }}
+            </li>
+        {% endfor %}
+    </ul>
+  {% else %}
+    <p>No accepted donations found for the  medium.</p>
+  {% endif %}
+</body>

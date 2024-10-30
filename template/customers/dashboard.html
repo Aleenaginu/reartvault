@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user.username }}'s Profile</title>
+    <link rel="stylesheet" href="{% static 'assets/css/profile.css' %}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: url("{% static 'profile.webp' %}") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #120952; /* Set a default text color */
+        }
+        .container {
+            display: flex;
+            max-width: 800px;
+            width: 90%;
+            height: auto;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.8); /* Increased opacity for better readability */
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
+        }
+        .profile-pic {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+        .profile-pic img {
+            border-radius: 10px;
+            width: 100%; /* Make image responsive */
+            height: auto; /* Maintain aspect ratio */
+            max-width: 250px; /* Limit max width */
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+        }
+        .profile-details {
+            flex: 2;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.9); /* Slightly more opaque for readability */
+            border-radius: 0 10px 10px 0;
+        }
+        .profile-details h2 {
+            font-family: 'Times New Roman', serif;
+            font-size: 32px; /* Slightly reduced size for better hierarchy */
+            font-weight: bold;
+            color: #120952;
+            margin: 0;
+            margin-bottom: 15px; /* Increased margin for spacing */
+        }
+        .profile-details p {
+            font-family: 'Times New Roman', serif;
+            font-size: 16px; /* Reduced size for better readability */
+            color: #120952;
+            margin: 0;
+            margin-bottom: 15px; /* Increased margin for spacing */
+        }
+        .profile-details h1 {
+            font-family: 'Times New Roman', serif;
+            font-size: 28px; /* Slightly reduced size */
+            color: #120952;
+            margin: 0;
+            margin-bottom: 15px; /* Increased margin for spacing */
+        }
+        .btn {
+            display: inline-block;
+            background-color: #82b4eb;
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            width: 150px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            margin-top: 10px; /* Added margin for spacing between buttons */
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-pic">
+        </div>
+        <div class="profile-details">
+            <h2>Welcome to Reart Vault!</h2>
+            <p>Every contribution helps make a difference—thank you for being a vital part of our community!</p>
+            <h1>Hi {{ user.username }}</h1>
+            <p>Email: {{ user.email }}</p>
+            <!-- <p>Phone: {{customer.phone }}</p> -->
+            <!-- <a href="{% url 'order_history' %}" class="btn">Orders</a> -->
+            <a href="{% url 'shop_index' %}" class="btn">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

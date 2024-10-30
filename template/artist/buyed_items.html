@@ -1,0 +1,652 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Responsive Admin Dashboard | ReArt Vault</title>
+  <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <!-- Boxicons CDN Link -->
+  <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+  <script>
+    document.querySelector('.profile-details').addEventListener('click', function () {
+      this.querySelector('.dropdown-menu').classList.toggle('show');
+    });
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+  .profile-details .dropdown-menu {
+    display: none;
+  }
+
+  .profile-details .dropdown-menu.show {
+    display: block;
+  }
+
+
+  .profile-details {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .profile-details img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+  }
+
+  .profile-details .admin_name {
+    margin-left: 10px;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .profile-details .bx-chevron-down {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .profile-details .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .profile-details .dropdown-menu li {
+    list-style: none;
+  }
+
+  .profile-details .dropdown-menu li a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .profile-details .dropdown-menu li a:hover {
+    background-color: #f0f0f0;
+  }
+
+  .profile-details:hover .dropdown-menu {
+    display: block;
+  }
+
+  .sales-details {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: 30px;
+    transition: all 0.3s ease;
+  }
+
+  .sales-details:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .sales-details h2, .sales-details h3 {
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 10px;
+  }
+
+  .sales-details h2::after, .sales-details h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(to right, #007bff, #00c6ff);
+  }
+
+  .summary-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+  }
+
+  .summary-info p {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .summary-info p:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+    margin-top: 20px;
+  }
+
+  .product-table th, .product-table td {
+    padding: 15px;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  .product-table th {
+    background-color: #007bff;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .product-table tr {
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .product-table tr:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-table .item-pic {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+
+  .product-table .item-pic:hover {
+    transform: scale(1.2);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .sales-details, .product-table tr {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .badge {
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 50%;
+    font-size: 12px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.form-container input[type="text"],
+    .form-container textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      color: #333;
+      transition: border-color 0.3s;
+    }
+  
+    .form-container input[type="text"]:focus,
+    .form-container textarea:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+.error-message {
+            display: none; /* Hide error message by default */
+            color: red;
+            font-size: 0.875em;
+}
+
+.btn-recommend {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-recommend:hover {
+  background-color: #218838;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#recommendationContent {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 20px;
+}
+
+.carousel-container {
+  position: relative;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.carousel-slide {
+  display: none;
+}
+
+.carousel-slide.active {
+  display: block;
+}
+
+.carousel-slide img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.carousel-button.prev {
+  left: 10px;
+}
+
+.carousel-button.next {
+  right: 10px;
+}
+</style>
+
+<body>
+  <div class="sidebar">
+    <div class="logo-details">
+      <!-- <i class=''></i> -->
+      <span class="logo_name" style="font-size: 30px; text-align: center; font-weight: 700; color: #b5c8c1;">ReArt Vault</span>
+    </div>
+    <ul class="nav-links">
+      <li>
+        <a href="{% url 'artist_dashboard' %}" class="active">
+          <i class='bx bx-grid-alt'></i>
+          <span class="links_name">Artist Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'add_mediums' %}">
+          <i class='bx bx-list-ul'></i>
+          <span class="links_name">Add medium</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'notifications' %}">
+          <i class='bx bx-message'></i>
+          <span class="links_name">Notifications</span>
+          {% if unread_count > 0 %}
+          <span class="badge">{{ unread_count }}</span>
+          {% endif %}
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'view_ratesartist' %}">
+          <i class='bx bx-pie-chart-alt-2'></i>
+          <span class="links_name">Price Listings</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'artist_interest_status' %}">
+          <i class='bx bx-list-ul'></i>
+          <span class="links_name">Interest Status</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'buyed_items' %}">
+          <i class='bx bx-list-ul'></i>
+          <span class="links_name">Buyed Items</span>
+        </a>
+          </li>
+      <li class="log_out">
+        <a href="{% url 'userlogout' %}">
+          <i class='bx bx-log-out'></i>
+          <span class="links_name">Log out</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <section class="home-section">
+    <nav>
+      <div class="sidebar-button">
+        <i class='bx bx-menu sidebarBtn'></i>
+        <span class="dashboard">Dashboard</span>
+      </div>
+      <div class="search-box">
+        <input type="text" placeholder="Search...">
+        <i class='bx bx-search'></i>
+      </div>
+      <a href="{% url 'shopdash' %}" style="text-decoration:none;"><div class="profile-details">
+        <i class='bx bx-shopping-bag'></i>
+        <span class="admin_name" style="font-size: 25px; font-weight: 900; color: #010302;">SHOP</span>
+      </div></a>
+      <div class="profile-details">
+        {% if artist.profile_pic %}
+         <img src="{{artist.profile_pic.url}}" alt="">
+        {% endif %}
+        <span class="admin_name" style="font-size: 25px; font-weight: 900; color: #010302;">Hi {{user.username}}</span>
+        <i class='bx bx-chevron-down'></i>
+        <ul class="dropdown-menu">
+          <li><a href="{% url 'userprofileartist' %}">View Profile</a></li>
+          <li><a href="{% url 'profile_update' %}">Edit Profile</a></li>
+          <!-- <li><a href="#">Settings</a></li> -->
+          <li><a href="{% url 'userlogout' %}">Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="home-content">
+      <div class="overview-boxes">
+        <div class="box" style="background-color:rgb(243, 212, 200);">
+          <div class="right-side">
+            <div class="box-topic">Expressed Interest</div>
+            <div class="number">{{ expressed_interest_count }}</div>
+            <div class="indicator">
+          
+            </div>
+          </div>
+        </div>
+        <div class="box" style="background-color:rgb(188, 233, 188);">
+          <div class="right-side">
+            <div class="box-topic">Accepted Interests</div>
+            <div class="number">{{ accepted_interest_count }}</div>
+            <div class="indicator">
+            
+            </div>
+          </div>
+          <!-- <i class='bx bxs-cart-add cart two'></i> -->
+        </div>
+        <div class="box" style="background-color:rgb(240, 240, 205);">
+          <div class="right-side">
+            <div class="box-topic">Added Categories</div>
+            <div class="number"> 0</div>
+            <div class="indicator">
+              
+            </div>
+          </div>
+        </div>
+        <div class="box" style="background-color:rgb(240, 205, 228);">
+          <div class="right-side">
+            <div class="box-topic">Sold Items</div>
+            <div class="number">0</div>
+            <div class="indicator">
+            
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="sales-details">
+        <h2>All Bought Items</h2>
+
+        <div class="summary-info">
+          <p>Total items: <strong>{{ total_items }}</strong></p>
+          <p>Total amount: <strong>${{ total_amount }}</strong></p>
+        </div>
+
+        <h3>Waste Medium Details</h3>
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th>Medium of Waste</th>
+              <th>Total Quantity</th>
+              <th>Total Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for medium in medium_summary %}
+              <tr>
+                <td>{{ medium.interest_request__donation__medium_of_waste__name }}</td>
+                <td>{{ medium.total_quantity }}</td>
+                <td>${{ medium.total_amount }}</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="3">No completed payments for any waste medium.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <h3>Donation Details</h3>
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Description</th>
+              <th>Quantity</th>
+              <th>Medium of Waste</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for donation in donations %}
+              <tr>
+                <td>
+                  {% if donation.image %}
+                    <img src="{{ donation.image }}" alt="Donation Image" class="item-pic">
+                  {% else %}
+                    No Image
+                  {% endif %}
+                </td>
+                <td>{{ donation.description }}</td>
+                <td>{{ donation.quantity }}</td>
+                <td>{{ donation.medium_of_waste }}</td>
+                <td>${{ donation.amount }}</td>
+                <td>{{ donation.date|date:"Y-m-d H:i" }}</td>
+                <td>
+                  <button class="btn-recommend" onclick="viewRecommendations({{ donation.id }})">View Recommendations</button>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="7">No completed donations found.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="recommendationModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Recommendations</h2>
+        <div id="imageCarousel" class="carousel-container"></div>
+        <div id="recommendationContent"></div>
+      </div>
+    </div>
+
+    <script>
+      // Make sure this is outside any function
+      var donations = JSON.parse('{{ donations_json|safe }}');
+
+      function viewRecommendations(donationId) {
+        console.log("viewRecommendations called with ID:", donationId);
+        console.log("All donations:", donations);
+
+        if (!donations || !Array.isArray(donations)) {
+          console.error("Donations data is not available or not an array");
+          alert("Unable to load donation data. Please try again later.");
+          return;
+        }
+
+        var modal = document.getElementById("recommendationModal");
+        modal.style.display = "block";
+        var donation = donations.find(d => d.id === donationId);
+        
+        console.log("Found donation:", donation);
+
+        if (donation) {
+          // Create image carousel
+          var carouselContent = "";
+          if (donation.images && donation.images.length > 0) {
+            carouselContent += "<div class='carousel-container'>";
+            donation.images.forEach((image, index) => {
+              carouselContent += `
+                <div class="carousel-slide ${index === 0 ? 'active' : ''}">
+                  <img src="${image}" alt="Donation Image ${index + 1}">
+                </div>
+              `;
+            });
+            carouselContent += `
+              <button class="carousel-button prev" onclick="changeSlide(-1)">&#10094;</button>
+              <button class="carousel-button next" onclick="changeSlide(1)">&#10095;</button>
+            </div>`;
+          } else if (donation.image) {
+            carouselContent = `<img src="${donation.image}" alt="Donation Image" class="single-image">`;
+          } else {
+            carouselContent = "<p>No images available for this donation.</p>";
+          }
+          document.getElementById("imageCarousel").innerHTML = carouselContent;
+          
+          // Display recommendations
+          var recommendationsContent = `
+            <h3>Art Project Recommendations for ${donation.medium_of_waste}:</h3>
+            <ul class='recommendation-list'>
+                ${donation.recommendations.map(rec => `
+                    <li class='recommendation-item'>
+                        <h4>${rec}</h4>
+                    </li>
+                `).join('')}
+            </ul>
+          `;
+          document.getElementById("recommendationContent").innerHTML = recommendationsContent;
+        } else {
+          console.log("No donation found for ID:", donationId);
+          document.getElementById("imageCarousel").innerHTML = "<p>No images available.</p>";
+          document.getElementById("recommendationContent").innerHTML = "<p>No recommendations found for this donation.</p>";
+        }
+      }
+
+      let currentSlide = 0;
+      function changeSlide(direction) {
+        const slides = document.querySelectorAll('.carousel-slide');
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + direction + slides.length) % slides.length;
+        slides[currentSlide].classList.add('active');
+      }
+
+      // Modal close functionality
+      var modal = document.getElementById("recommendationModal");
+      var span = document.getElementsByClassName("close")[0];
+
+      span.onclick = function() {
+        modal.style.display = "none";
+      }
+
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+         {% for message in messages %}
+             Swal.fire({
+                 icon: '{% if message.tags %}{{ message.tags }}{% else %}info{% endif %}', 
+                 title: '{{ message }}',
+                 showConfirmButton: false,
+                 timer: 3000
+             });
+         {% endfor %}
+     });
+         </script>
+</body>
+</html>
