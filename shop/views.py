@@ -29,7 +29,6 @@ def shop_index(request, category_slug=None):
         except Customers.DoesNotExist:
             wishlist_count = 0  # Handle case where customer does not exist
 
-    # If no products are found, you can handle it gracefully
     if not products.exists():
         return render(request, 'shop/no_products.html')  # Render a different template
 
