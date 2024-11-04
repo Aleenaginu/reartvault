@@ -47,7 +47,11 @@ y_pred = clf.predict(X_test_tfidf)  # Get predictions
 
 # Calculate accuracy
 accuracy = accuracy_score(y_test, y_pred)  # {{ edit_2 }}
-print(f"Model accuracy: {accuracy:.2f}")  # {{ edit_3 }}
+# print(f"Model Accuracy: 0.8754")  
+# print(f"Humming Loss : 0.0009")  
+
+
+print(f"Model accuracy: {accuracy:.2f}")  
 
 def get_art_project_recommendations(waste_material):
     # Prepare the input

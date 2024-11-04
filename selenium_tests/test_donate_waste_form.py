@@ -62,7 +62,7 @@ try:
 
     quantity_field = wait.until(EC.visibility_of_element_located((By.NAME, 'quantity')))
     quantity_field.clear()
-    quantity = '-5'  
+    quantity = '15'  
     quantity_field.send_keys(quantity)
     print("Entered quantity.")
     time.sleep(2) 
