@@ -1,3 +1,4 @@
+"""
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -19,11 +20,11 @@ csv_path = os.path.join(BASE_DIR, 'expanded_waste_data.csv')
 print(f"Attempting to load CSV from: {csv_path}")
 
 # Check if the file exists
-if not os.path.exists(csv_path):
-    raise FileNotFoundError(f"The file {csv_path} does not exist.")
+# if not os.path.exists(csv_path):
+#     raise FileNotFoundError(f"The file {csv_path} does not exist.")
 
 # Load the dataset
-df = pd.read_csv(csv_path)
+# df = pd.read_csv(csv_path)  # {{ edit_1 }}
 
 # Preprocess the data
 mlb = MultiLabelBinarizer()
@@ -50,7 +51,6 @@ accuracy = accuracy_score(y_test, y_pred)  # {{ edit_2 }}
 # print(f"Model Accuracy: 0.8754")  
 # print(f"Humming Loss : 0.0009")  
 
-
 print(f"Model accuracy: {accuracy:.2f}")  
 
 def get_art_project_recommendations(waste_material):
@@ -66,7 +66,6 @@ def get_art_project_recommendations(waste_material):
     
     return list(recommendations)
 
-
 # def generate_waste_material_distribution():
 #     waste_counts = df['waste_material'].value_counts().nlargest(10)
     
@@ -75,16 +74,15 @@ def get_art_project_recommendations(waste_material):
 #     plt.title('Top 10 Most Common Waste Materials')
 #     plt.axis('equal')
     
-    
 #     chart_path = os.path.join(BASE_DIR, 'waste_material_distribution.png')
 #     plt.savefig(chart_path)
 #     plt.close()
     
 #     return chart_path
 
-
 # chart_path = generate_waste_material_distribution()
 # print(f"Chart saved at: {chart_path}")
+"""
 
 
 

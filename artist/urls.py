@@ -21,7 +21,7 @@ urlpatterns = [
     path('receipt/<int:interest_id>/', views.view_receipt, name='view_receipt'),
     path('buyed-items/', views.buyed_items, name='buyed_items'),
     path('buyed-items/<int:product_id>/', views.buyed_items, name='buyed_items_with_id'),
-    path('get-recommendations/', views.get_recommendations_view, name='get_recommendations'),
+    # path('get-recommendations/', views.get_recommendations_view, name='get_recommendations'),
     path('get-donation-details/<int:donation_id>/', views.get_donation_details, name='get_donation_details'),
 
 
