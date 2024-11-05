@@ -510,7 +510,7 @@ from artist.models import *
 from category.models import *
 import json
 from django.core.serializers.json import DjangoJSONEncoder
-# from .ml_utils import get_art_project_recommendations
+from .ml_utils import get_art_project_recommendations
 from django.db.models import Sum
 import logging
 
@@ -581,19 +581,19 @@ def buyed_items(request):
         messages.error(request, "Unable to load donation data. Please try again later.")
         return redirect('artist_dashboard')
 
-# def get_recommendations_view(request):
-#     waste_material = request.GET.get('material', '')
+def get_recommendations_view(request):
+    waste_material = request.GET.get('material', '')
 
-#     if not waste_material:
-#         return JsonResponse({'error': 'No waste material provided'}, status=400)
+    if not waste_material:
+        return JsonResponse({'error': 'No waste material provided'}, status=400)
 
-#     try:
-#         recommendations = get_art_project_recommendations(waste_material)
-#         logger.info(f"Generated recommendations for {waste_material}: {recommendations}")
-#         return JsonResponse({'recommendations': recommendations})
-#     except Exception as e:
-#         logger.error(f"Error in get_recommendations_view: {str(e)}")
-#         return JsonResponse({'error': 'Failed to generate recommendations'}, status=500)
+    try:
+        recommendations = get_art_project_recommendations(waste_material)
+        logger.info(f"Generated recommendations for {waste_material}: {recommendations}")
+        return JsonResponse({'recommendations': recommendations})
+    except Exception as e:
+        logger.error(f"Error in get_recommendations_view: {str(e)}")
+        return JsonResponse({'error': 'Failed to generate recommendations'}, status=500)
     
 
 

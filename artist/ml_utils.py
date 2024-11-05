@@ -1,4 +1,3 @@
-"""
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -24,11 +23,13 @@ print(f"Attempting to load CSV from: {csv_path}")
 #     raise FileNotFoundError(f"The file {csv_path} does not exist.")
 
 # Load the dataset
-# df = pd.read_csv(csv_path)  # {{ edit_1 }}
+df = pd.read_csv(csv_path)  # {{ edit_1 }}
+
+# Initialize mlb
+mlb = MultiLabelBinarizer()
 
 # Preprocess the data
-mlb = MultiLabelBinarizer()
-y = mlb.fit_transform(df['art_project'].str.split(','))
+y = mlb.fit_transform(df['art_project'].str.split(','))  # {{ edit_2 }}
 
 # Split the data
 X_train, X_test, y_train, y_test = train_test_split(
@@ -82,7 +83,7 @@ def get_art_project_recommendations(waste_material):
 
 # chart_path = generate_waste_material_distribution()
 # print(f"Chart saved at: {chart_path}")
-"""
+
 
 
 
