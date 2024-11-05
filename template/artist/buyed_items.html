@@ -542,97 +542,29 @@
       </div>
     </div>
 
-    <div id="recommendationModal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Recommendations</h2>
-        <div id="imageCarousel" class="carousel-container"></div>
-        <div id="recommendationContent"></div>
-      </div>
-    </div>
-
     <script>
-      // Make sure this is outside any function
+      // Remove the recommendation viewing functionality
       var donations = JSON.parse('{{ donations_json|safe }}');
 
       function viewRecommendations(donationId) {
-        console.log("viewRecommendations called with ID:", donationId);
-        console.log("All donations:", donations);
-
-        if (!donations || !Array.isArray(donations)) {
-          console.error("Donations data is not available or not an array");
-          alert("Unable to load donation data. Please try again later.");
-          return;
-        }
-
-        var modal = document.getElementById("recommendationModal");
-        modal.style.display = "block";
-        var donation = donations.find(d => d.id === donationId);
-        
-        console.log("Found donation:", donation);
-
-        if (donation) {
-          // Create image carousel
-          var carouselContent = "";
-          if (donation.images && donation.images.length > 0) {
-            carouselContent += "<div class='carousel-container'>";
-            donation.images.forEach((image, index) => {
-              carouselContent += `
-                <div class="carousel-slide ${index === 0 ? 'active' : ''}">
-                  <img src="${image}" alt="Donation Image ${index + 1}">
-                </div>
-              `;
-            });
-            carouselContent += `
-              <button class="carousel-button prev" onclick="changeSlide(-1)">&#10094;</button>
-              <button class="carousel-button next" onclick="changeSlide(1)">&#10095;</button>
-            </div>`;
-          } else if (donation.image) {
-            carouselContent = `<img src="${donation.image}" alt="Donation Image" class="single-image">`;
-          } else {
-            carouselContent = "<p>No images available for this donation.</p>";
-          }
-          document.getElementById("imageCarousel").innerHTML = carouselContent;
-          
-          // Display recommendations
-          var recommendationsContent = `
-            <h3>Art Project Recommendations for ${donation.medium_of_waste}:</h3>
-            <ul class='recommendation-list'>
-                ${donation.recommendations.map(rec => `
-                    <li class='recommendation-item'>
-                        <h4>${rec}</h4>
-                    </li>
-                `).join('')}
-            </ul>
-          `;
-          document.getElementById("recommendationContent").innerHTML = recommendationsContent;
-        } else {
-          console.log("No donation found for ID:", donationId);
-          document.getElementById("imageCarousel").innerHTML = "<p>No images available.</p>";
-          document.getElementById("recommendationContent").innerHTML = "<p>No recommendations found for this donation.</p>";
-        }
+        alert("Recommendations feature has been removed.");
       }
 
+      // Remove the carousel and modal close functionality
       let currentSlide = 0;
       function changeSlide(direction) {
-        const slides = document.querySelectorAll('.carousel-slide');
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + direction + slides.length) % slides.length;
-        slides[currentSlide].classList.add('active');
+        // No longer needed
       }
 
-      // Modal close functionality
       var modal = document.getElementById("recommendationModal");
       var span = document.getElementsByClassName("close")[0];
 
       span.onclick = function() {
-        modal.style.display = "none";
+        // No longer needed
       }
 
       window.onclick = function(event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
+        // No longer needed
       }
     </script>
 
